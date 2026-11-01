@@ -10,11 +10,15 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.view.View;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MaterialSwitch swDelivery;
+    private EditText etAddress;
     private EditText etName;
     private Spinner spPizza;
     private RadioGroup rgSize;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectViews() {
+        swDelivery = findViewById(R.id.swDelivery);
+        etAddress = findViewById(R.id.etAddress);
         etName = findViewById(R.id.etName);
         spPizza = findViewById(R.id.spPizza);
         rgSize = findViewById(R.id.rgSize);
@@ -87,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupListeners() {
         btnOrder.setOnClickListener(v -> showOrderSummary());
+        swDelivery.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                etAddress.setVisibility(View.VISIBLE);
+            } else {
+                etAddress.setVisibility(View.GONE);
+                etAddress.setText("");
+            }
+        });
     }
 
     private void showOrderSummary() {
