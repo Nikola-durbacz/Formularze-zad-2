@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -101,10 +102,53 @@ public class MainActivity extends AppCompatActivity {
                 etAddress.setText("");
             }
         });
+
+    }
+
+    private boolean validateOrder() {
+
+        String name = etName.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            etName.setError("Wpisz imię i nazwisko");
+            etName.requestFocus();
+            return false;
+        }
+
+        etName.setError(null);
+
+        if (spPizza.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Wybierz pizzę", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (rgSize.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Wybierz rozmiar pizzy", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (swDelivery.isChecked()) {
+            String address = etAddress.getText().toString().trim();
+
+            if (address.isEmpty()) {
+                etAddress.setError("Wpisz adres dostawy");
+                etAddress.requestFocus();
+                return false;
+            }
+
+            etAddress.setError(null);
+        }
+
+        return true;
     }
 
     private void showOrderSummary() {
-        String name = etName.getText().toString();
+
+        if (!validateOrder()) {
+            return;
+        }
+
+        String name = etName.getText().toString().trim();
         String pizza = spPizza.getSelectedItem().toString();
 
         String size = "Nie wybrano";
