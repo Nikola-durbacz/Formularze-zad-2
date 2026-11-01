@@ -1,6 +1,9 @@
 
 package com.example.formularzezad2;
 
+
+import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnOrder.setOnClickListener(v -> showOrderSummary());
+        btnOrder.setOnClickListener(v -> showConfirmation());
         swDelivery.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 etAddress.setVisibility(View.VISIBLE);
@@ -104,7 +107,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private void showConfirmation() {
 
+        if (!validateOrder()) {
+            return;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Potwierdzenie zamówienia")
+                .setMessage("Czy na pewno chcesz złożyć zamówienie?")
+                .setNegativeButton("ANULUJ", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("POTWIERDZAM", (dialog, which) -> showOrderSummary())
+                .show();
+    }
     private boolean validateOrder() {
 
         String name = etName.getText().toString().trim();
@@ -189,5 +204,13 @@ public class MainActivity extends AppCompatActivity {
                         "Ilość: " + quantity;
 
         tvSummary.setText(summary);
+        Snackbar.make(
+                findViewById(R.id.main),
+                "Zamówienie zostało złożone",
+                Snackbar.LENGTH_LONG
+        ).setAction("COFNIJ", v -> {
+            tvSummary.setText("");
+            Toast.makeText(this, "Zamówienie zostało cofnięte", Toast.LENGTH_SHORT).show();
+        }).show();
     }
 }
