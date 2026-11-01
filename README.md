@@ -11,3 +11,8 @@
 
 
 
+Który interfejs listenera ma więcej niż jedną metodę i co to oznacza dla sposobu pisania kodu?**
+
+Interfejs `SeekBar.OnSeekBarChangeListener` ma trzy metody, dlatego trzeba je wszystkie zaimplementować. Nie można obsłużyć go jedną prostą lambdą.
+
+Natomiast `CheckBox.OnCheckedChangeListener` ma jedną metodę, więc można zastosować lambdę.
